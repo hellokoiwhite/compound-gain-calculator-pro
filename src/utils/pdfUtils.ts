@@ -75,7 +75,7 @@ export function generatePDF(results: CalculationResult[], initialCapital: number
   URL.revokeObjectURL(url);
 }
 
-export function sendEmailWithResults(results: CalculationResult[], initialCapital: number) {
+export function sendEmailWithResults(results: CalculationResult[], initialCapital: number, email: string) {
   const finalAmount = results[results.length - 1]?.cumulativeAmount || 0;
   const totalGain = finalAmount - initialCapital;
   
@@ -94,5 +94,5 @@ Best regards,
 Compound Calculator Pro
   `);
   
-  window.open(`mailto:?subject=${subject}&body=${body}`);
+  window.open(`mailto:${email}?subject=${subject}&body=${body}`);
 }

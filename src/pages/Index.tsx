@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -66,12 +65,12 @@ const Index = () => {
     }
   };
 
-  const handleSendEmail = () => {
+  const handleSendEmail = (email: string) => {
     if (results.length > 0 && lastInput) {
-      sendEmailWithResults(results, lastInput.capital);
+      sendEmailWithResults(results, lastInput.capital, email);
       toast({
         title: "Email Client Opened",
-        description: "Your default email client has been opened with the results.",
+        description: `Email prepared and sent to ${email}`,
       });
     }
   };

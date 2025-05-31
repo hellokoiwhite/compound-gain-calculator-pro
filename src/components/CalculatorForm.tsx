@@ -20,9 +20,25 @@ interface CalculatorFormProps {
 export function CalculatorForm({ onCalculate }: CalculatorFormProps) {
   const [capital, setCapital] = useState<number>(1000);
   const [dailyGainPercent, setDailyGainPercent] = useState<number[]>([2]);
+  const [dailyGainInput, setDailyGainInput] = useState<string>('2');
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [numberOfDays, setNumberOfDays] = useState<number>(30);
   const [excludeWeekends, setExcludeWeekends] = useState<boolean>(false);
+
+  const handleSliderChange = (value: number[]) => {
+    setDailyGainPercent(value);
+    setDailyGainInput(value[0].toString());
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setDailyGainInput(value);
+    
+    const numValue = parseFloat(value);
+    if (!isNaN(numValue) && numValue >= 0.1 && numValue <= 100) {
+      setDailyGainPercent([numValue]);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,10 +76,25 @@ export function CalculatorForm({ onCalculate }: CalculatorFormProps) {
           </div>
 
           <div className="space-y-4">
-            <Label className="text-lg font-semibold">Daily Gain Percentage: {dailyGainPercent[0]}%</Label>
+            <Label className="text-lg font-semibold">Daily Gain Percentage</Label>
+            
+            <div className="flex items-center gap-4">
+              <Input
+                type="number"
+                value={dailyGainInput}
+                onChange={handleInputChange}
+                className="w-24 h-10"
+                min="0.1"
+                max="100"
+                step="0.1"
+                placeholder="2.0"
+              />
+              <span className="text-sm text-gray-500">%</span>
+            </div>
+            
             <Slider
               value={dailyGainPercent}
-              onValueChange={setDailyGainPercent}
+              onValueChange={handleSliderChange}
               max={100}
               min={0.1}
               step={0.1}

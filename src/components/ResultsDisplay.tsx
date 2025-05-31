@@ -1,23 +1,29 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Download, Mail } from 'lucide-react';
 import { CalculationResult } from '@/lib/types';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { EmailDialog } from './EmailDialog';
 
 interface ResultsDisplayProps {
   results: CalculationResult[];
   initialCapital: number;
   onDownloadPDF: () => void;
-  onSendEmail: () => void;
+  onSendEmail: (email: string) => void;
 }
 
 export function ResultsDisplay({ results, initialCapital, onDownloadPDF, onSendEmail }: ResultsDisplayProps) {
+  const [isEmailDialogOpen, setIsEmailDialogOpen] = useState(false);
+  
   const finalAmount = results[results.length - 1]?.cumulativeAmount || 0;
   const totalGain = finalAmount - initialCapital;
   const totalReturnPercent = ((totalGain / initialCapital) * 100);
+
+  const handleEmailSend = (email: string) => {
+    onSendEmail(email);
+  };
 
   return (
     <div className="w-full max-w-6xl mx-auto space-y-6">
@@ -60,7 +66,7 @@ export function ResultsDisplay({ results, initialCapital, onDownloadPDF, onSendE
             </Button>
             
             <Button 
-              onClick={onSendEmail}
+              onClick={() => setIsEmailDialogOpen(true)}
               variant="outline"
               className="flex-1"
             >
@@ -105,6 +111,12 @@ export function ResultsDisplay({ results, initialCapital, onDownloadPDF, onSendE
           </ScrollArea>
         </CardContent>
       </Card>
+
+      <EmailDialog
+        isOpen={isEmailDialogOpen}
+        onClose={() => setIsEmailDialogOpen(false)}
+        onSendEmail={handleEmailSend}
+      />
     </div>
   );
 }
