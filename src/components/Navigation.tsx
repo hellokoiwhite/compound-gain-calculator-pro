@@ -65,22 +65,27 @@ export function Navigation({ isOpen, onClose, currentPage, onNavigate }: Navigat
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent side="left" className="w-80">
-        <SheetHeader>
-          <SheetTitle>Menu</SheetTitle>
+      <SheetContent side="left" className="w-full max-w-sm bg-gradient-to-b from-slate-800 to-slate-900 border-slate-700">
+        <SheetHeader className="border-b border-slate-700 pb-4">
+          <SheetTitle className="text-white text-left">Menu</SheetTitle>
         </SheetHeader>
         <div className="mt-6 space-y-2">
           {menuItems.map((item) => {
             const Icon = item.icon;
+            const isActive = currentPage === item.id;
             return (
               <Button
                 key={item.id}
-                variant={currentPage === item.id ? "secondary" : "ghost"}
-                className="w-full justify-start"
+                variant="ghost"
+                className={`w-full justify-start text-left h-auto py-3 px-4 ${
+                  isActive 
+                    ? "bg-blue-600 text-white hover:bg-blue-700" 
+                    : "text-slate-300 hover:bg-slate-700 hover:text-white"
+                }`}
                 onClick={() => handleNavigate(item.id)}
               >
-                <Icon className="mr-3 h-4 w-4" />
-                {item.label}
+                <Icon className="mr-3 h-5 w-5 flex-shrink-0" />
+                <span className="text-sm leading-tight">{item.label}</span>
               </Button>
             );
           })}

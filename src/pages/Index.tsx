@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { Header } from '@/components/Header';
@@ -171,7 +172,7 @@ const Index = () => {
 
   return (
     <ThemeProvider>
-      <div className="min-h-screen">
+      <div className="min-h-screen w-full max-w-full overflow-x-hidden">
         {shouldShowHeaderAndMenu && (
           <>
             <Header 
@@ -186,7 +187,9 @@ const Index = () => {
             />
           </>
         )}
-        {renderScreen()}
+        <div className="w-full">
+          {renderScreen()}
+        </div>
       </div>
     </ThemeProvider>
   );
