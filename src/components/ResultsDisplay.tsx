@@ -184,33 +184,35 @@ export function ResultsDisplay({
             <CardTitle className="text-xl">Investment Breakdown</CardTitle>
           </CardHeader>
           
-          <CardContent className="flex flex-col items-center">
-            <ChartContainer
-              config={chartConfig}
-              className="mx-auto aspect-square max-h-[300px] w-full max-w-[300px]"
-            >
-              <PieChart width={300} height={300}>
-                <ChartTooltip
-                  cursor={false}
-                  content={<ChartTooltipContent hideLabel />}
-                />
-                <Pie
-                  data={pieData}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={80}
-                  innerRadius={40}
-                  strokeWidth={2}
-                >
-                  {pieData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-              </PieChart>
-            </ChartContainer>
-            <div className="flex justify-center gap-6 mt-4">
+          <CardContent className="flex flex-col items-center p-8">
+            <div className="w-full max-w-xs mx-auto">
+              <ChartContainer
+                config={chartConfig}
+                className="mx-auto aspect-square max-h-[250px] w-full"
+              >
+                <PieChart width={250} height={250}>
+                  <ChartTooltip
+                    cursor={false}
+                    content={<ChartTooltipContent hideLabel />}
+                  />
+                  <Pie
+                    data={pieData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={70}
+                    innerRadius={35}
+                    strokeWidth={2}
+                  >
+                    {pieData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ChartContainer>
+            </div>
+            <div className="flex flex-wrap justify-center gap-4 mt-6">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-red-500 rounded-full"></div>
                 <span className="text-sm">Initial Capital</span>

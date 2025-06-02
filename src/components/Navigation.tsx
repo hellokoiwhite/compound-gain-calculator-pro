@@ -77,15 +77,17 @@ export function Navigation({ isOpen, onClose, currentPage, onNavigate }: Navigat
               <Button
                 key={item.id}
                 variant="ghost"
-                className={`w-full justify-start text-left h-auto py-3 px-4 ${
+                className={`w-full justify-start text-left py-4 px-4 min-h-[60px] ${
                   isActive 
                     ? "bg-blue-600 text-white hover:bg-blue-700" 
                     : "text-slate-300 hover:bg-slate-700 hover:text-white"
                 }`}
                 onClick={() => handleNavigate(item.id)}
               >
-                <Icon className="mr-3 h-5 w-5 flex-shrink-0" />
-                <span className="text-sm leading-tight">{item.label}</span>
+                <div className="flex items-center w-full">
+                  <Icon className="mr-3 h-5 w-5 flex-shrink-0" />
+                  <span className="text-sm leading-relaxed flex-1 break-words">{item.label}</span>
+                </div>
               </Button>
             );
           })}
