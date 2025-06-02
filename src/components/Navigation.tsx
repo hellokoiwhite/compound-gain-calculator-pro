@@ -65,7 +65,7 @@ export function Navigation({ isOpen, onClose, currentPage, onNavigate }: Navigat
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent side="left" className="w-full max-w-sm bg-gradient-to-b from-slate-800 to-slate-900 border-slate-700">
+      <SheetContent side="left" className="w-[70vw] max-w-sm bg-gradient-to-b from-slate-800 to-slate-900 border-slate-700">
         <SheetHeader className="border-b border-slate-700 pb-4">
           <SheetTitle className="text-white text-left">Menu</SheetTitle>
         </SheetHeader>

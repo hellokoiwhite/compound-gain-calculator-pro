@@ -184,12 +184,12 @@ export function ResultsDisplay({
             <CardTitle className="text-xl">Investment Breakdown</CardTitle>
           </CardHeader>
           
-          <CardContent>
+          <CardContent className="flex flex-col items-center">
             <ChartContainer
               config={chartConfig}
-              className="mx-auto aspect-square max-h-[350px]"
+              className="mx-auto aspect-square max-h-[300px] w-full max-w-[300px]"
             >
-              <PieChart>
+              <PieChart width={300} height={300}>
                 <ChartTooltip
                   cursor={false}
                   content={<ChartTooltipContent hideLabel />}
@@ -198,8 +198,11 @@ export function ResultsDisplay({
                   data={pieData}
                   dataKey="value"
                   nameKey="name"
-                  innerRadius={60}
-                  strokeWidth={5}
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={80}
+                  innerRadius={40}
+                  strokeWidth={2}
                 >
                   {pieData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
