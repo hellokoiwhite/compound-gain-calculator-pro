@@ -3,7 +3,7 @@ import { addDays, format, isWeekend } from 'date-fns';
 import { CalculationInput, CalculationResult } from '@/lib/types';
 
 export function calculateCompoundInterest(input: CalculationInput): CalculationResult[] {
-  const { capital, dailyGainPercent, startDate, numberOfDays, excludeWeekends } = input;
+  const { capital, dailyGainPercent, startDate, numberOfDays, excludeWeekends, reinvestmentRate } = input;
   const results: CalculationResult[] = [];
   
   let currentAmount = capital;
@@ -19,7 +19,10 @@ export function calculateCompoundInterest(input: CalculationInput): CalculationR
     }
 
     const dailyGain = currentAmount * (dailyGainPercent / 100);
-    currentAmount += dailyGain;
+    const reinvested = dailyGain * (reinvestmentRate / 100);
+    const withdrawal = dailyGain - reinvested;
+    
+    currentAmount += reinvested;
     actualDays++;
     dayCounter++;
 
@@ -27,6 +30,8 @@ export function calculateCompoundInterest(input: CalculationInput): CalculationR
       date: format(currentDate, 'yyyy-MM-dd'),
       day: dayCounter,
       dailyGain: dailyGain,
+      withdrawal: withdrawal,
+      reinvested: reinvested,
       cumulativeAmount: currentAmount,
     });
 

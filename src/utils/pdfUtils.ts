@@ -1,9 +1,13 @@
 
 import { CalculationResult } from '@/lib/types';
+import { format } from 'date-fns';
 
-export function generatePDF(results: CalculationResult[], initialCapital: number) {
+export function generatePDF(results: CalculationResult[], initialCapital: number, reinvestmentRate: number, startDate: Date) {
   const finalAmount = results[results.length - 1]?.cumulativeAmount || 0;
-  const totalGain = finalAmount - initialCapital;
+  const totalWithdrawals = results.reduce((sum, result) => sum + result.withdrawal, 0);
+  const totalNetProfit = (finalAmount - initialCapital) + totalWithdrawals;
+  const endDate = results[results.length - 1]?.date || format(startDate, 'MM/dd/yyyy');
+  const businessDays = results.length;
   
   // Create a simple HTML content for PDF generation
   const htmlContent = `
@@ -14,11 +18,12 @@ export function generatePDF(results: CalculationResult[], initialCapital: number
       <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
         .header { text-align: center; margin-bottom: 30px; }
-        .summary { margin-bottom: 30px; }
-        .summary-item { display: inline-block; margin: 10px 20px; }
-        table { width: 100%; border-collapse: collapse; }
+        .summary { margin-bottom: 30px; line-height: 1.6; }
+        .summary p { margin: 10px 0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
         th { background-color: #f2f2f2; }
+        .highlight { font-weight: bold; }
       </style>
     </head>
     <body>
@@ -28,15 +33,12 @@ export function generatePDF(results: CalculationResult[], initialCapital: number
       </div>
       
       <div class="summary">
-        <div class="summary-item">
-          <strong>Initial Capital:</strong> $${initialCapital.toLocaleString()}
-        </div>
-        <div class="summary-item">
-          <strong>Final Amount:</strong> $${finalAmount.toLocaleString()}
-        </div>
-        <div class="summary-item">
-          <strong>Total Gain:</strong> $${totalGain.toLocaleString()}
-        </div>
+        <h2>Summary</h2>
+        <p><span class="highlight">You started with an investment of:</span> $${initialCapital.toLocaleString()} on ${format(startDate, 'MM/dd/yyyy')}</p>
+        <p><span class="highlight">Your principal amount grew to:</span> $${finalAmount.toLocaleString()} by ${endDate}</p>
+        <p><span class="highlight">Your total cash withdrawals were:</span> $${totalWithdrawals.toLocaleString()} over the course of ${businessDays} business days</p>
+        <p><span class="highlight">Your total NET profit for the ${businessDays}-day period was:</span> $${totalNetProfit.toLocaleString()}</p>
+        <p><span class="highlight">Reinvestment rate used:</span> ${reinvestmentRate}%</p>
       </div>
       
       <table>
@@ -45,6 +47,8 @@ export function generatePDF(results: CalculationResult[], initialCapital: number
             <th>Day</th>
             <th>Date</th>
             <th>Daily Gain</th>
+            <th>Withdrawal</th>
+            <th>Reinvested</th>
             <th>Cumulative Amount</th>
           </tr>
         </thead>
@@ -54,6 +58,8 @@ export function generatePDF(results: CalculationResult[], initialCapital: number
               <td>${result.day}</td>
               <td>${result.date}</td>
               <td>$${result.dailyGain.toLocaleString()}</td>
+              <td>$${result.withdrawal.toLocaleString()}</td>
+              <td>$${result.reinvested.toLocaleString()}</td>
               <td>$${result.cumulativeAmount.toLocaleString()}</td>
             </tr>
           `).join('')}
@@ -73,26 +79,4 @@ export function generatePDF(results: CalculationResult[], initialCapital: number
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
-}
-
-export function sendEmailWithResults(results: CalculationResult[], initialCapital: number, email: string) {
-  const finalAmount = results[results.length - 1]?.cumulativeAmount || 0;
-  const totalGain = finalAmount - initialCapital;
-  
-  const subject = encodeURIComponent('Compound Interest Calculation Results');
-  const body = encodeURIComponent(`
-Dear User,
-
-Here are your compound interest calculation results:
-
-Initial Capital: $${initialCapital.toLocaleString()}
-Final Amount: $${finalAmount.toLocaleString()}
-Total Gain: $${totalGain.toLocaleString()}
-Number of Days: ${results.length}
-
-Best regards,
-Compound Calculator Pro
-  `);
-  
-  window.open(`mailto:${email}?subject=${subject}&body=${body}`);
 }
