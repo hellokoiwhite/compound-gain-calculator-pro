@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { Header } from '@/components/Header';
@@ -137,14 +136,6 @@ const Index = () => {
       case 'results':
         return (
           <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-            <div className="text-center pt-6 pb-4">
-              <button 
-                onClick={handleBackToCalculator}
-                className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
-              >
-                ← Back to Calculator
-              </button>
-            </div>
             <ResultsDisplay
               results={results}
               initialCapital={lastInput?.capital || 0}
