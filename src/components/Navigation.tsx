@@ -2,7 +2,7 @@
 import React from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { Calculator, FileText, Lightbulb, Settings, Share } from 'lucide-react';
+import { Home, FileText, Lightbulb, Settings, Share } from 'lucide-react';
 
 interface NavigationProps {
   isOpen: boolean;
@@ -14,8 +14,8 @@ interface NavigationProps {
 const menuItems = [
   {
     id: 'calculator',
-    label: 'Daily Compound Interest Calculator',
-    icon: Calculator,
+    label: 'Home',
+    icon: Home,
   },
   {
     id: 'disclaimer',
